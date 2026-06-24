@@ -2,18 +2,17 @@ namespace FeedbackForms.Domain.Models;
 
 public class Answer
 {
-    public Guid Id;
+    public Guid Id { get; set; }
 
-    public required string UserName;
+    public required string UserName { get; set; }
 
-    public required string Email;
+    public required string Email { get; set; }
 
-    public required string Text;
+    public required string Text { get; set; }
 
-    public Guid TopicId;
+    public Guid TopicId { get; set; }
 
-    public required Topic Topic;
+    public Topic Topic { get; set; } = null!;
 
-    public DateTime CreatedAt;
+    public DateTime CreatedAt { get; set; }
 }
-

@@ -1,3 +1,4 @@
+using FeedbackForms.Features.Answers;
 using FeedbackForms.Features.Topics;
 
 namespace FeedbackForms.WebApi.Extenisons;
@@ -19,5 +20,6 @@ public static class AppExtensions
         }
 
         app.UseTopicEndpoints();
+        app.UseAnswerEndpoints();
     }
 }

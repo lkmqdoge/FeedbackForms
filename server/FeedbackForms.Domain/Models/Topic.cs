@@ -2,14 +2,13 @@ namespace FeedbackForms.Domain.Models;
 
 public class Topic
 {
-    public Guid Id;
+    public Guid Id { get; set; }
 
-    public required string Title;
+    public required string Title { get; set; }
 
-    public required string Body;
+    public required string Body { get; set; }
 
-    public ICollection<Answer> Answers = [];
+    public ICollection<Answer> Answers { get; set; } = [];
 
-    public DateTime CreatedAt;
+    public DateTime CreatedAt { get; set; }
 }
-
