@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="FeedbackForms.Domain/FeedbackForms.Domain.csproj" />
+  <Project Path="FeedbackForms.Features/FeedbackForms.Features.csproj" />
+  <Project Path="FeedbackForms.Infrastructure/FeedbackForms.Infrastructure.csproj" />
+  <Project Path="FeedbackForms.WebApi/FeedbackForms.WebApi.csproj" />
+</Solution>

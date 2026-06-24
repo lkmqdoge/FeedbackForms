@@ -1,0 +1,14 @@
+run:
+    @dotnet run --project FeedbackForms.WebApi
+
+ef-mg-add mname:
+    dotnet ef migrations add {{mname}} -p ./FeedbackForms.Infrastructure -s ./FeedbackForms.WebApi
+
+ef-mg-remove:
+    dotnet ef migrations remove -p ./FeedbackForms.Infrastructure -s ./FeedbackForms.WebApi
+
+ef-db-update:
+    dotnet ef database update -p ./FeedbackForms.Infrastructure -s ./FeedbackForms.WebApi
+
+ef-db-drop:
+    dotnet ef database drop -p ./FeedbackForms.Infrastructure -s ./FeedbackForms.WebApi
