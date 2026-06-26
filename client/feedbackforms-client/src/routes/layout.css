@@ -1,2 +1,14 @@
 @import 'tailwindcss';
 @plugin '@tailwindcss/forms';
+
+@theme {
+    --color-primary: #EAE2E7;
+    --color-secondary: #003049;
+    --color-accennt: #FCBF49;
+    --color-brand: #F77F00;
+    --color-supporting: #F77F00;
+}
+
+body {
+    color: var(--color-secondary);
+}

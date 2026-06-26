@@ -18,6 +18,6 @@
 </form>
 
 <style>
-    form { display: grid }
+    form { display: grid}
     label { display: grid }
 </style>

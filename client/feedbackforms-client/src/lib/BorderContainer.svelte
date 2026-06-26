@@ -2,7 +2,7 @@
     let { children } = $props();
 </script>
 
-<div class="p-1 border-4 border-blue-400" >
+<div class="p-1 border-4" >
     {@render children()}
 </div>
 
