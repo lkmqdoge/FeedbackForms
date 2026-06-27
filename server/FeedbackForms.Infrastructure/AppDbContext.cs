@@ -1,11 +1,18 @@
 using FeedbackForms.Domain.Models;
 
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace FeedbackForms.Infrastructure;
 
-public class AppDbContext(DbContextOptions options) : DbContext(options)
+public class AppDbContext : DbContext
 {
+    public AppDbContext(DbContextOptions options)
+        : base(options)
+    {
+    }
+
     public DbSet<Form> Forms { get; set; }
 
     public DbSet<Topic> Topics { get; set; }

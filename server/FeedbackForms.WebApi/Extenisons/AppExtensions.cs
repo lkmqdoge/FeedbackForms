@@ -7,19 +7,15 @@ public static class AppExtensions
 {
     public static void ConfigureApp(this WebApplication app)
     {
-        app.UseHttpsRedirection();
-
         if (app.Environment.IsDevelopment())
         {
             app.UseSwagger();
-            app.UseSwaggerUI(options =>
-            {
-                options.SwaggerEndpoint("/swagger/v1/swagger.json", "Product service v1");
-                options.RoutePrefix = string.Empty;
-            });
+            app.UseSwaggerUI();
         }
+        app.MapGet("/", async () => "Hello!");
 
-        app.UseTopicEndpoints();
-        app.UseAnswerEndpoints();
+        var apiGroup = app.MapGroup("/api");
+        apiGroup.UseTopicEndpoints();
+        apiGroup.UseAnswerEndpoints();
     }
 }

@@ -1,9 +1,13 @@
 import { error } from "@sveltejs/kit"
 import type { PageServerLoad } from "./$types";
+import { getTopicById } from "$lib/api";
 
-export const load: PageServerLoad = ({ params }) => {
-    if (params.id === "")
-        return;
+export const load: PageServerLoad = async ({ params }) => {
+    const topic = await getTopicById({ id: params.id });
 
-    error(404, "not found");
+    if (!topic) {
+        error(404, "not found");
+    }
+
+    return topic;
 }

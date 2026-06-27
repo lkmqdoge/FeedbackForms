@@ -8,9 +8,8 @@
 
 <svelte:head><link rel="icon" href={favicon} /></svelte:head>
 
-<div class="bg-primary h-screen flex-col flex gap-y-8">
+<div class="bg-primary h-full min-h-screen flex-col flex gap-y-16">
     <Header innerClassName="w-5xl" />
-
     <div class="flex justify-center items-center">
         <div class="w-5xl">
             {@render children()}

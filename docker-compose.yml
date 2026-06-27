@@ -1,0 +1,50 @@
+services:
+  db:
+    container_name: postgres_db
+    image: postgres:16
+    restart: always
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=0000
+      - POSTGRES_DB=feedbackformsdb
+    ports:
+      - 5432:5432
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin_web
+    restart: always
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@admin.com
+      - PGADMIN_DEFAULT_PASSWORD=0000
+    ports:
+      - 5050:80
+    depends_on:
+      - db
+  
+  backend:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    container_name: feedbackforms-server
+    environment:
+      - ConnectionStrings__DefaultConnection=Host=db;Port=5432;Database=feedbackformsdb;Username=admin;Password=0000
+    restart: unless-stopped
+    depends_on:
+      - db
+    ports:
+      - 5000:8080
+
+  frontend:
+    build:
+      context: ./client/feedbackforms-client/
+      dockerfile: Dockerfile
+    container_name: feedbackforms-client
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    
+volumes:
+  pgdata:
