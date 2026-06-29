@@ -4,18 +4,18 @@
 </script>
 
 <Container>
-    <form>
+    <form method="post">
         <label>
             Username
-            <input type="text" />
+            <input name="username" type="text" required />
         </label>
         <label>
             Email 
-            <input type="email" />
+            <input name="email" type="email" required />
         </label>
         <label>
             Text
-            <textarea name="text" class="h-[200px] resize-none"></textarea>
+            <textarea name="text" class="h-[200px] reseze-none" required></textarea>
         </label>
         <div class="flex justify-center p-4">
             <Turnstile siteKey="0x4AAAAAADr8Hcb17gPctx9g" />

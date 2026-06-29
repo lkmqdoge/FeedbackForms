@@ -18,6 +18,7 @@
 		"@sveltejs/vite-plugin-svelte": "^7.1.2",
 		"@tailwindcss/forms": "^0.5.11",
 		"@tailwindcss/vite": "^4.3.0",
+		"@types/node": "^26.0.1",
 		"svelte": "^5.56.1",
 		"svelte-check": "^4.6.0",
 		"svelte-turnstile": "^0.11.0",
@@ -28,6 +29,7 @@
 	"dependencies": {
 		"axios": "^1.18.1",
 		"clsx": "^2.1.1",
+		"dotenv": "^17.4.2",
 		"tailwind-merge": "^3.6.0"
 	}
 }

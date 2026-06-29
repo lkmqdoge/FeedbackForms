@@ -43,6 +43,8 @@ services:
       dockerfile: Dockerfile
     container_name: feedbackforms-client
     restart: unless-stopped
+    environment:
+      - API_BASE_URL=http://backend:8080
     ports:
       - "3000:3000"
     

@@ -15,6 +15,11 @@ public class TopicConfiguration : IEntityTypeConfiguration<Topic>
             .WithOne(e => e.Topic)
             .HasForeignKey(e => e.TopicId)
             .IsRequired();
+
+        builder
+            .HasOne(e => e.User)
+            .WithMany(e => e.Topics)
+            .HasForeignKey(e => e.UserId)
+            .IsRequired();
     }
 }
-

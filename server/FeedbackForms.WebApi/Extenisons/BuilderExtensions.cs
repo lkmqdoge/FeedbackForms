@@ -1,4 +1,4 @@
-using FeedbackForms.Features.Forms;
+using FeedbackForms.Features.Topics;
 using FeedbackForms.Infrastructure;
 
 using Microsoft.OpenApi;
@@ -10,7 +10,6 @@ public static class BuilderExtensions
     public static void ConfigureAppBuilder(this WebApplicationBuilder builder)
     {
         builder.Services.AddDataAccess(builder.Configuration);
-
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen(options => options.SwaggerDoc("v1", new OpenApiInfo
         {
@@ -23,7 +22,23 @@ public static class BuilderExtensions
                 Email = "leere0@proton.me"
             }
         }));
+
         builder.Services.AddMediatR(cfg =>
-            cfg.RegisterServicesFromAssemblies(typeof(FormsEndpoints).Assembly));
+            cfg.RegisterServicesFromAssemblies(typeof(TopicEndpoints).Assembly));
+
+        builder.Services.AddAuthorization();
+        builder.Services.AddCors(o => o.AddPolicy("frontend", policy =>
+            policy
+                .WithOrigins("http://frontend:3000")
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .AllowCredentials()
+        ));
+        builder.Services.AddHttpContextAccessor();
+        builder.Services.AddTransient<ILogger>(p =>
+        {
+            var loggerFactory = p.GetRequiredService<ILoggerFactory>();
+            return loggerFactory.CreateLogger("My logger");
+        });
     }
 }

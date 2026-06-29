@@ -110,10 +110,49 @@ namespace FeedbackForms.Infrastructure.Migrations
                         .HasColumnType("text")
                         .HasColumnName("title");
 
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("user_id");
+
                     b.HasKey("Id")
                         .HasName("pk_topics");
 
+                    b.HasIndex("UserId")
+                        .HasDatabaseName("ix_topics_user_id");
+
                     b.ToTable("topics", (string)null);
+                });
+
+            modelBuilder.Entity("FeedbackForms.Domain.Models.User", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("email");
+
+                    b.Property<string>("HashedPassword")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("hashed_password");
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("user_name");
+
+                    b.HasKey("Id")
+                        .HasName("pk_users");
+
+                    b.ToTable("users", (string)null);
                 });
 
             modelBuilder.Entity("FeedbackForms.Domain.Models.Answer", b =>
@@ -130,7 +169,24 @@ namespace FeedbackForms.Infrastructure.Migrations
 
             modelBuilder.Entity("FeedbackForms.Domain.Models.Topic", b =>
                 {
+                    b.HasOne("FeedbackForms.Domain.Models.User", "User")
+                        .WithMany("Topics")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_topics_users_user_id");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("FeedbackForms.Domain.Models.Topic", b =>
+                {
                     b.Navigation("Answers");
+                });
+
+            modelBuilder.Entity("FeedbackForms.Domain.Models.User", b =>
+                {
+                    b.Navigation("Topics");
                 });
 #pragma warning restore 612, 618
         }

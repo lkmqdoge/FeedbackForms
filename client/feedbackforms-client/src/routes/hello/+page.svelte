@@ -1,8 +1,8 @@
 <script lang="ts">
-    import type { PageData } from "../$types";
+    import type { PageProps } from "./$types";
 
-    let { data }: { data: PageData } = $props();
+    let { data }: PageProps = $props();
 </script>
 
-<h1>{data}</h1>
+<h1>{data.hello}</h1>
 <h1>test!</h1>

@@ -13,7 +13,8 @@
         <div class="wrap-anywhere">
             <h1>{title}</h1>
         </div>
-        <div class="flex-1 overflow-y-auto overflow-x-hidden wrap-break-words min-h-0">
+        <hr class="border-t border-s-accennt my-4" />
+        <div class="wrap-break-word">
             <p class="whitespace-pre-wrap">{bodyText}</p>
         </div>
     </div>

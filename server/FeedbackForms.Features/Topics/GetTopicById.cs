@@ -1,5 +1,6 @@
 using ErrorOr;
 
+using FeedbackForms.Features.Shared;
 using FeedbackForms.Infrastructure;
 using MediatR;
 
@@ -7,28 +8,30 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FeedbackForms.Features.Topics;
 
-public record TopicDto(
-    Guid Guid,
-    string Title,
-    string Body
-);
-public record GetTopicQueryById(Guid Id)
+public record GetTopicByIdRequest(Guid TopicId, Guid? UserId = null);
+public record GetTopicByIdQuery(GetTopicByIdRequest Request)
     : IRequest<ErrorOr<TopicDto>>;
 
-public class GetTopicHandler(AppDbContext appDbContext)
-    : IRequestHandler<GetTopicQueryById, ErrorOr<TopicDto>>
+public class GetTopicByIdHandler(AppDbContext appDbContext)
+    : IRequestHandler<GetTopicByIdQuery, ErrorOr<TopicDto>>
 {
-    public async Task<ErrorOr<TopicDto>> Handle(GetTopicQueryById request, CancellationToken cancellationToken)
+    public async Task<ErrorOr<TopicDto>> Handle(GetTopicByIdQuery request, CancellationToken cancellationToken)
     {
         var topic = await appDbContext.Topics
             .AsNoTracking()
-            .FirstOrDefaultAsync(t => t.Id == request.Id);
+            .FirstOrDefaultAsync(t => t.Id == request.Request.TopicId, cancellationToken);
 
-        return topic is null
-            ? Error.NotFound()
-            : new TopicDto(
+        if (topic is null)
+        {
+            return Error.NotFound();
+        }
+
+        var isOwner = (request.Request.UserId is not null) && topic.UserId == request.Request.UserId;
+
+        return new TopicDto(
                 topic.Id,
                 topic.Title,
-                topic.Body);
+                topic.Body,
+                isOwner);
     }
 }
