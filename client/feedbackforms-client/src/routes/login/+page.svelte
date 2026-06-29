@@ -1,10 +1,11 @@
 <script lang="ts">
     import Container from "$lib/Container.svelte";
+    import {enhance} from "$app/forms";
 </script>
 
 <Container>
     <h1>Login</h1>
-    <form method="post">
+    <form method="post" use:enhance>
         <label>
             Email
             <input name="email" type="email">

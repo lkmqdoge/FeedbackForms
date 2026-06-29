@@ -1,4 +1,4 @@
-import { fail, redirect } from '@sveltejs/kit';
+import { error, fail, redirect } from '@sveltejs/kit';
 import type { Actions } from './$types';
 import { createApiClient } from '$lib/api-client';
 
@@ -16,39 +16,57 @@ export const actions = {
             return fail(400, { password, missing: true });
         }
 
-        const apiClient = createApiClient();
+        try {
+            const apiClient = createApiClient();
 
-        const token = await apiClient.api.usersLoginCreate({
-            email: email.toString(),
-            password: password.toString(),
-        });
+            const token = await apiClient.api.usersLoginCreate({
+                email: email.toString(),
+                password: password.toString(),
+            });
 
+            if (!token) return fail(400, { message: 'Invalid credentials' });
 
-        if (!token) return fail(400, { message: 'Invalid credentials' });
+            const apiClientWithToken = createApiClient(token.data);
+            const user = await apiClientWithToken.api.usersMeList();
 
-        const apiClientWithToken = createApiClient(token.data);
-        const user = await apiClientWithToken.api.usersMeList();
+            if (!user.data.id || !user.data.userName)
+                return fail(400, { message: "Failed to load user information" });
 
-        if (!user.data.id || !user.data.userName) return fail(400, { message: 'Invalid credentials' });
+            cookies.set("access_token", token.data, {
+                path: '/',
+                httpOnly: true,
+                maxAge: 60 * 60 * 24
+            });
 
-        cookies.set("access_token", token.data, {
-            path: '/',
-            httpOnly: true,
-            maxAge: 60 * 60 * 24
-        });
+            cookies.set("user_id", user.data.id, {
+                path: '/',
+                httpOnly: true,
+                maxAge: 60 * 60 * 24
+            });
 
-        cookies.set("user_id", user.data.id, {
-            path: '/',
-            httpOnly: true,
-            maxAge: 60 * 60 * 24
-        });
+            cookies.set("user_name", user.data.userName, {
+                path: '/',
+                httpOnly: true,
+                maxAge: 60 * 60 * 24
+            });
 
-        cookies.set("user_name", user.data.userName, {
-            path: '/',
-            httpOnly: true,
-            maxAge: 60 * 60 * 24
-        });
+            throw redirect(303, '/dashboard');
+        } catch (e: any) {
+            if (e.status === 401) {
+                return fail(401, {
+                    message: "Invalid email or password"
+                });
+            }
 
-        throw redirect(303, '/dashboard');
+            if (e.status === 400) {
+                return fail(400, {
+                    message: e.body?.message ?? "Invalid request"
+                });
+            }
+
+            console.error(e);
+
+            throw error(500, "Internal server error");
+        }
     }
 } satisfies Actions;
